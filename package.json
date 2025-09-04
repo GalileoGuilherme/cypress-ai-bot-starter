@@ -1,0 +1,23 @@
+{
+  "name": "cypress-ai-bot-starter",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "cypress:open": "cypress open",
+    "cypress:run": "cypress run",
+    "bot": "node cypress/bot/index.mjs",
+    "bot:ui": "node cypress/bot/index.mjs ui",
+    "bot:api": "node cypress/bot/index.mjs api"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "cypress": "^15.1.0"
+  },
+  "dependencies": {
+    "dotenv": "^17.2.2",
+    "openai": "^5.19.1"
+  }
+}
