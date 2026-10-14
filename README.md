@@ -3,7 +3,7 @@
 
 > Projeto Cypress com *bot de IA* para gerar scripts de automação rapidamente (UI e API).
 
-## 📦 Pré-resquisitos
+## 📦 Pré-requisitos
 
 - Node.js 18+ (LTS recomendado)
 - Git
@@ -32,8 +32,8 @@ cypress-ai-bot-starter/
 
 1. Copie `.env.example` para `.env` e preencha sua chave:
 ```env
-OPENAI_API_KEY = coloque_sua_chave_aqui
-OPENAI_MODEL = gpt-4o-mini
+OPENAI_API_KEY=coloque_sua_chave_aqui
+OPENAI_MODEL=gpt-4o-mini
 
 ```
 
@@ -72,7 +72,7 @@ npm run bot:ui -- "Criar teste de login que valida redirecionamento para /dashbo
 
 ```
 
-*Saída esperada:*
+**Saída esperada:**
 
 > ✅ Teste gerado em: `cypress/e2e/generated/1700000000000_criar-teste-de-login-que-valida-redirecionamento-para-dashboard.cy.js`
 
@@ -98,7 +98,7 @@ npm run bot:api -- "Validar GET /wallet/balance/{walletId} retorna status 200 e 
 
 ```
 
-*Saída esperada:*
+**Saída esperada:**
 
 > ✅ Teste gerado em: `cypress/e2e/generated/1700000000000_validar-get-wallet-balance-walletid.cy.js`
 
@@ -122,7 +122,8 @@ describe('API Wallet', () => {
 
 ## 📝 Licença
 
-Use livremente como template para projetos de QA e automação
+Use livremente como template para projetos de QA e automação.
+
 ```
 
 ```
