@@ -123,6 +123,3 @@ describe('API Wallet', () => {
 ## 📝 Licença
 
 Use livremente como template para projetos de QA e automação.
-
-```
-
