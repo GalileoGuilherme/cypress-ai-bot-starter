@@ -1,7 +1,3 @@
-Compreendido perfeitamente. Para garantir que a formatação do Markdown saia inteiramente correta, limpa e sem quebras indesejadas de blocos, aqui tens o código completo e unificado para o ficheiro **`README.md`**.
-
-Podes copiar o bloco de código abaixo por completo e colá-lo diretamente no teu editor ou no ficheiro no GitHub:
-
 ```markdown
 # Cypress AI Bot Starter
 
@@ -126,8 +122,7 @@ describe('API Wallet', () => {
 
 ## 📝 Licença
 
-Use livremente como template para projetos de QA e automação.
-
+Use livremente como template para projetos de QA e automação
 ```
 
 ```
