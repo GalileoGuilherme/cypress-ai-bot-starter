@@ -6,6 +6,8 @@
   "scripts": {
     "cypress:open": "cypress open",
     "cypress:run": "cypress run",
+    "demo": "node demo/server.mjs",
+    "test": "node --test cypress/bot/index.test.mjs",
     "bot": "node cypress/bot/index.mjs",
     "bot:ui": "node cypress/bot/index.mjs ui",
     "bot:api": "node cypress/bot/index.mjs api"

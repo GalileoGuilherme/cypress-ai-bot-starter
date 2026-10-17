@@ -1,125 +1,106 @@
-```markdown
 # Cypress AI Bot Starter
 
-> Projeto Cypress com *bot de IA* para gerar scripts de automação rapidamente (UI e API).
+Projeto de que demonstra geração de testes Cypress para UI e API, com uma aplicação local reproduzível e modo simulado que não exige chave de IA.
 
-## 📦 Pré-requisitos
+## Requisitos
 
-- Node.js 18+ (LTS recomendado)
-- Git
-- Uma chave de API da OpenAI ou outro modelo compatível
+- Node.js 18 ou superior
+- npm
+- Chave da API OpenAI somente para geração real com IA
 
-## 🗂 Estrutura do projeto
+## O que o projeto demonstra
+
+- Geração de specs Cypress de UI e API por IA ou por templates simulados.
+- Testes E2E de uma aplicação local, sem depender de serviços externos.
+- Testes unitários do CLI com o runner nativo do Node.js.
+
+## Estrutura
 
 ```text
-cypress-ai-bot-starter/
-  ├─ cypress/
-  │   ├─ e2e/
-  │   │   └─ generated/        # testes gerados
-  │   └─ support/
-  └─ cypress/bot/
-      ├─ index.mjs               # bot principal
-      └─ prompts/
-          ├─ ui.md               # prompt base UI
-          └─ api.md              # prompt base API
-  ├─ cypress.config.js
-  ├─ package.json
-  └─ .env.example
-
+cypress/
+  bot/                 # CLI, prompts e testes unitários
+  e2e/generated/       # specs carregados pelo Cypress
+  support/             # configuração compartilhada dos testes
+demo/                  # aplicação local usada pelos exemplos
+cypress.config.js
 ```
 
-## ⚙️ Configuração
+## Instalação
 
-1. Copie `.env.example` para `.env` e preencha sua chave:
-```env
-OPENAI_API_KEY=coloque_sua_chave_aqui
-OPENAI_MODEL=gpt-4o-mini
-
-```
-
-
-2. Instale dependências:
 ```bash
 npm install
-
 ```
 
+## Executar a demo e os testes
 
-
-## 🚀 Scripts NPM disponíveis
+Inicie a aplicação de demonstração em um terminal:
 
 ```bash
-# Abrir Cypress UI
-npm run cypress:open
+npm run demo
+```
 
-# Rodar todos os testes headless
+Ela ficará disponível em `http://localhost:3000`. A tela de login usa estas credenciais locais:
+
+```text
+E-mail: demo@example.com
+Senha:  Cypress123!
+```
+
+O endpoint de exemplo `GET /api/wallet/balance/demo-wallet` retorna uma carteira fixa com saldo de demonstração. Em outro terminal, execute os testes Cypress incluídos:
+
+```bash
 npm run cypress:run
-
-# Gerar teste UI
-npm run bot:ui -- "Descrição do teste"
-
-# Gerar teste API
-npm run bot:api -- "Descrição do teste"
-
 ```
 
-## 📌 Exemplos de execução
-
-### 1) Gerar teste de UI
+Para abrir a interface do Cypress:
 
 ```bash
-npm run bot:ui -- "Criar teste de login que valida redirecionamento para /dashboard"
-
+npm run cypress:open
 ```
 
-**Saída esperada:**
+A aplicação é apenas uma demo local. Credenciais fixas e endpoints simplificados não devem ser usados em produção.
 
-> ✅ Teste gerado em: `cypress/e2e/generated/1700000000000_criar-teste-de-login-que-valida-redirecionamento-para-dashboard.cy.js`
+## Gerar testes sem chave de API
 
-Arquivo gerado (`cypress/e2e/generated/...`) com conteúdo semelhante a:
-
-```javascript
-describe('Login', () => {
-  it('Deve logar e ir para dashboard', () => {
-    cy.visit('/login');
-    cy.get('[data-testid=email]').type('usuario@teste.com');
-    cy.get('[data-testid=password]').type('Senha@123');
-    cy.get('[data-testid=submit]').click();
-    cy.url().should('include', '/dashboard');
-  });
-});
-
-```
-
-### 2) Gerar teste de API
+O modo `--mock` não usa IA: ele gera templates determinísticos para os fluxos de login e saldo da demo. A descrição informada é usada como título do teste. Nenhuma chave ou chamada externa é necessária:
 
 ```bash
-npm run bot:api -- "Validar GET /wallet/balance/{walletId} retorna status 200 e campo balance"
-
+npm run bot:ui -- --mock "Validar login e acesso ao dashboard"
+npm run bot:api -- --mock "Validar saldo da carteira demo"
 ```
 
-**Saída esperada:**
+Os arquivos gerados são salvos em `cypress/e2e/generated/`, a pasta monitorada pelo Cypress. Com a demo ainda rodando, execute `npm run cypress:run` para validar os specs gerados junto com os exemplos `demo-login.cy.js` e `demo-wallet-api.cy.js`, que já vêm incluídos.
 
-> ✅ Teste gerado em: `cypress/e2e/generated/1700000000000_validar-get-wallet-balance-walletid.cy.js`
+## Geração com OpenAI
 
-Arquivo gerado (`cypress/e2e/generated/...`) com conteúdo semelhante a:
+1. Copie `.env.example` para `.env`.
+2. Insira sua própria chave no campo `OPENAI_API_KEY` e, se necessário, altere `OPENAI_MODEL`.
+3. Execute um dos comandos sem `--mock`, por exemplo:
 
-```javascript
-describe('API Wallet', () => {
-  it('Deve retornar balance corretamente', () => {
-    cy.request('GET', '/wallet/balance/{walletId}').its('status').should('eq', 200);
-    cy.request('GET', '/wallet/balance/{walletId}').its('body').should('have.property', 'balance');
-  });
-});
-
+```bash
+npm run bot:ui -- "Validar login e acesso ao dashboard"
+npm run bot:api -- "Validar saldo da carteira demo"
 ```
 
-## ⚡ Observações
+Não compartilhe nem versione o arquivo `.env`. A geração real requer acesso à API e pode consumir créditos. Todo código gerado deve ser revisado antes de ser executado.
 
-* Se ocorrer erro de *quota* (429), verifique a chave da OpenAI ou use outro modelo compatível.
-* Ajuste `baseUrl` no `cypress.config.js` conforme seu ambiente.
-* Os testes gerados podem precisar de pequenas adaptações dependendo do app.
+## Testes do bot
 
-## 📝 Licença
+Os testes unitários usam o runner nativo do Node.js e não precisam de chave de API:
 
-Use livremente como template para projetos de QA e automação.
+```bash
+npm test
+```
+
+## Scripts disponíveis
+
+| Comando | Descrição |
+| --- | --- |
+| `npm run demo` | Inicia a aplicação local de demonstração |
+| `npm run cypress:open` | Abre a interface do Cypress |
+| `npm run cypress:run` | Executa os specs encontrados pelo Cypress |
+| `npm run bot:ui -- <descrição>` | Gera um teste E2E com OpenAI |
+| `npm run bot:api -- <descrição>` | Gera um teste de API com OpenAI |
+| `npm run bot:ui -- --mock <descrição>` | Gera um teste UI simulado, sem chave |
+| `npm run bot:api -- --mock <descrição>` | Gera um teste API simulado, sem chave |
+| `npm test` | Executa os testes unitários do bot |

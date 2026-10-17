@@ -1,0 +1,70 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Cypress AI Bot - Demo</title>
+    <style>
+      body { font: 16px/1.5 system-ui, sans-serif; margin: 3rem auto; max-width: 34rem; padding: 0 1rem; color: #202938; }
+      main { border: 1px solid #d8dee9; border-radius: 0.75rem; padding: 2rem; }
+      label { display: block; margin: 1rem 0 0.25rem; }
+      input, button { box-sizing: border-box; font: inherit; padding: 0.65rem; width: 100%; }
+      button { background: #175cd3; border: 0; border-radius: 0.4rem; color: white; cursor: pointer; margin-top: 1.25rem; }
+      [role="alert"] { color: #b42318; }
+    </style>
+  </head>
+  <body>
+    <main>
+      <section data-testid="login">
+        <h1>Entrar na demo</h1>
+        <p>Use as credenciais de demonstração exibidas no README.</p>
+        <form data-testid="login-form">
+          <label for="email">E-mail</label>
+          <input id="email" data-testid="email" name="email" type="email" required>
+          <label for="password">Senha</label>
+          <input id="password" data-testid="password" name="password" type="password" required>
+          <button data-testid="submit" type="submit">Entrar</button>
+          <p data-testid="login-error" role="alert" hidden></p>
+        </form>
+      </section>
+      <section data-testid="dashboard" hidden>
+        <h1 data-testid="welcome"></h1>
+        <p>Ambiente local de demonstração do Cypress AI Bot.</p>
+      </section>
+    </main>
+    <script>
+      const login = document.querySelector('[data-testid="login"]')
+      const dashboard = document.querySelector('[data-testid="dashboard"]')
+      const showDashboard = () => {
+        login.hidden = true
+        dashboard.hidden = false
+        document.querySelector('[data-testid="welcome"]').textContent = 'Bem-vindo, Demo!'
+      }
+
+      if (window.location.pathname === '/dashboard') showDashboard()
+
+      document.querySelector('[data-testid="login-form"]').addEventListener('submit', async (event) => {
+        event.preventDefault()
+        const form = new FormData(event.currentTarget)
+        const response = await fetch('/api/login', {
+          method: 'POST',
+          headers: { 'content-type': 'application/json' },
+          body: JSON.stringify({
+            email: form.get('email'),
+            password: form.get('password'),
+          }),
+        })
+
+        if (!response.ok) {
+          const error = document.querySelector('[data-testid="login-error"]')
+          error.textContent = 'E-mail ou senha inválidos.'
+          error.hidden = false
+          return
+        }
+
+        window.history.pushState({}, '', '/dashboard')
+        showDashboard()
+      })
+    </script>
+  </body>
+</html>
